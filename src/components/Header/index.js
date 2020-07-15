@@ -18,6 +18,11 @@ const Header = props => {
                     </Link>
                 </>
             }
+            {!props.admin &&
+                <Link to={'/agenda'}>
+                    <p>Agendamentos</p>
+                </Link>
+            }
             <Link to={''}>
                 <p onClick={() => {localStorage.removeItem('user-token'); localStorage.removeItem('admin-token'); }}>Sair</p>
             </Link>

@@ -38,4 +38,32 @@ export const Container = styled.div`
             filter: brightness(190%);
         }
     }
+
+    div.create-visit {
+        width: 90%;
+        max-width: 1300px;
+        background-color: rgb(255, 255, 255, 0.05);
+        margin: 0 auto;
+        padding: 25px;
+        margin-bottom: 45px;
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input, select, button {
+            padding: 8px;
+            width: 200px;
+            height: 38px;
+            margin-right: 16px;
+        }
+
+        button {
+            width: 100px;
+            border: 0px;
+            border-radius: 3px;
+            background-color: rgb(32, 170, 118);
+            color: white;
+        }
+    }
 `;

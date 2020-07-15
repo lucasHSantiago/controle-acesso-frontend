@@ -5,9 +5,12 @@ import api from '../../services/api';
 import Header from '../../components/Header';
 import CustomerVisit from '../../components/CustomerVisit';
 import { useParams, useHistory } from 'react-router-dom';
+import { useAlert } from 'react-alert'
+
 
 const VisitDetails = props => {
     const { id } = useParams();
+    const alert = useAlert();
 
     const history = useHistory();
 
@@ -36,8 +39,10 @@ const VisitDetails = props => {
             headers: {
                 autorization: `Bearer ${localStorage.getItem('user-token')}`,
             }
-        }).then(() => {
+        }).then(reponse => {
             history.push('/agenda');
+        }).catch(error => {
+            alert.show('Erro: ' +error.response.data.item);
         });
     }
 
@@ -81,26 +86,30 @@ const VisitDetails = props => {
     }, []);
 
     return (
-        <>
-            <Header />
+        <>  
+            <Header admin={props.admin ? true : false} />
             <Container>
                 <h1>Editar visita</h1>
-                <p>Horario de inicio: {visit.hourStart}:00</p>
-                <p>Horario final: {visit.hourEnd}:00</p>
-                <p>Data: {visit.day > 9 ? visit.day : `0${visit.day}`}/{visit.month > 9 ? visit.month : `0${visit.month}`}/{visit.year}</p>
-                <form onSubmit={handleSubmit} method="post">
-                    <input type="date" name="date" onChange={e => {loadAvailableHours(e.target.value); setDate(e.target.value)}} />
-                    <select onChange={e => setHourStart(e.target.value)}>
-                        <option>- Selecione uma opção -</option>
-                        {Object.keys(availableHours).map((hour, idx) => (
-                            <option key={idx} value={hour}>{hour}:00</option>
-                        ))}
-                    </select>
-                    <button type="submit">Salvar</button>
-                </form>
+                <p>Horario de inicio: <strong>{visit.hourStart}:00</strong></p>
+                <p>Horario final: <strong>{visit.hourEnd}:00</strong></p>
+                <p>Data: <strong>{visit.day > 9 ? visit.day : `0${visit.day}`}/{visit.month > 9 ? visit.month : `0${visit.month}`}/{visit.year}</strong></p>
+                {!props.admin &&
+                    <form className="create-visit" onSubmit={handleSubmit} method="post">
+                        <input type="date" name="date" onChange={e => {loadAvailableHours(e.target.value); setDate(e.target.value)}} />
+                        <select onChange={e => setHourStart(e.target.value)}>
+                            <option>- Selecione uma opção -</option>
+                            {Object.keys(availableHours).map((hour, idx) => (
+                                <option key={idx} value={hour}>{hour}:00</option>
+                                ))}
+                        </select>
+                        <button type="submit">Salvar</button>
+                    </form>
+                }
                 {props.admin &&
                     customers.map((customer, idx) => (
-                        <CustomerVisit customer={customer} key={idx} />
+                        <div className="customer">
+                            <CustomerVisit customer={customer} key={idx} />
+                        </div>
                     )
                 )}
             </Container>

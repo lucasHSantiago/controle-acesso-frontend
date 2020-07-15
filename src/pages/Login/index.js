@@ -4,8 +4,12 @@ import { Container } from './styles';
 import { Link, useHistory, Redirect } from 'react-router-dom';
 import api from '../../services/api';
 import AdminConfig from '../AdminConfig';
+import { useAlert } from 'react-alert';
+
 
 const Login = props => {
+    const alert = useAlert();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -35,6 +39,8 @@ const Login = props => {
                 localStorage.setItem(tokenName, token);
                 history.push(loginRedirect);
             }
+        }).catch(error => {
+            alert.show('Erro: ' + error.response.data.error);
         });
     }
     

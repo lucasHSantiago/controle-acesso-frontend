@@ -38,10 +38,10 @@ const Schedule = props => {
                 autorization: `Bearer ${localStorage.getItem('user-token')}`
             }
         }).then(response => {
-            console.log(response);
+            alert.show('Sua visita foi agendada!');
             setRefresh(refresh + 1);
         }).catch((error, response) => {
-            alert.show('Erro: ' + response.error);
+            alert.show('Erro: ' + error.response.data.error);
         });
     }
     
@@ -120,16 +120,19 @@ const Schedule = props => {
         <Container>
             <Header admin={props.admin ? true : false}/>
             {!props.admin &&
-                <form onSubmit={handleSubmit} method="post">
-                    <input type="date" name="date" onChange={e => loadAvailableHours(e.target.value)} />
-                    <select onChange={e => setHourStart(e.target.value)}>
-                        <option>- Selecione uma opção -</option>
-                        {Object.keys(availableHours).map((hour, idx) => (
-                            <option key={idx} value={hour}>{hour}:00</option>
-                        ))}
-                    </select>
-                    <button type="submit">Salvar</button>
-                </form>
+                <div className="create-visit">
+                    <h1>Agendar consulta</h1>
+                    <form onSubmit={handleSubmit} method="post">
+                        <input type="date" name="date" onChange={e => loadAvailableHours(e.target.value)} />
+                        <select onChange={e => setHourStart(e.target.value)}>
+                            <option>- Selecione uma opção -</option>
+                            {Object.keys(availableHours).map((hour, idx) => (
+                                <option key={idx} value={hour}>{hour}:00</option>
+                            ))}
+                        </select>
+                        <button type="submit">Salvar</button>
+                    </form>
+                </div>
             }
             <div className="month-selector">
                 <h1>

@@ -6,9 +6,9 @@ import api from '../../services/api';
 const CustomerVisit = props => {
     return (
         <Container>
-            <p>Nome: {props.customer.name}</p>
-            <p>Email: {props.customer.email}</p>
-            <p>Telefone: {props.customer.cellPhone}</p>
+            <p>Nome: <strong>{props.customer.name}</strong></p>
+            <p>Email: <strong>{props.customer.email}</strong></p>
+            <p>Telefone: <strong>{props.customer.cellPhone}</strong></p>
         </Container>
     );
 }

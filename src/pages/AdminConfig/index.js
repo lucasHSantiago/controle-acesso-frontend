@@ -3,8 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Container } from './styles';
 import Header from '../../components/Header';
 import api from '../../services/api';
+import { useAlert } from 'react-alert';
 
 const AdminConfig = () => {
+    const alert = useAlert();
+
     const [config, setConfig] = useState();
     const [maxVisits, setMaxVisits] = useState();
     const [permanenceTime, setPermanenceTime] = useState();
@@ -36,12 +39,16 @@ const AdminConfig = () => {
             headers: {
                 autorization: `Bearer ${localStorage.getItem('admin-token')}` 
             }
-        })
+        }).then(response => {
+            alert.show('As configuraões foram alteradas com sucesso!');
+        }).catch(error => {
+            console.log(error);
+            alert.show('Erro: ' + error.response.data.error);
+        });
     }
 
     useEffect(() => {
         loadConfigs();
-        
     }, []);
 
     return (
